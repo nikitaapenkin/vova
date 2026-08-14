@@ -1,0 +1,37 @@
+export type Language = 'ru' | 'en';
+
+export type Messages = {
+  title: string;
+  subtitle: string;
+  core: string;
+  meteors: string;
+  score: string;
+  best: string;
+  combo: string;
+  ready: string;
+  left: string;
+  right: string;
+  controls: string;
+  firstHint: string;
+  start: string;
+  language: string;
+  paused: string;
+  resume: string;
+  inPlay: string;
+  holdSpace: string;
+  power: string;
+  gravityPulse: string;
+  meteorLost: string;
+  blackHole: string;
+  finalScore: string;
+  gameOverBody: string;
+  restart: string;
+  gameOver: string;
+  extraMeteor: string;
+  cosmicStart: string;
+  cosmic: string;
+  cosmicComplete: string;
+  soundOn: string;
+  soundOff: string;
+  newRecord: string;
+};

@@ -1,0 +1,13 @@
+:root { font-family: "Share Tech Mono", "Courier New", monospace; color: #eafcff; background: #02030c; }
+* { box-sizing: border-box; }
+html, body, #app { width: 100%; min-width: 320px; height: 100%; margin: 0; overflow: hidden; }
+body { background: radial-gradient(circle at 50% 35%, #17104a 0, #07051d 42%, #01030a 100%); }
+#app { display: grid; place-items: center; padding: 12px; }
+.game-shell { position: relative; width: min(calc((100vh - 24px) * 4 / 3), calc(100vw - 24px)); aspect-ratio: 4 / 3; border: 2px solid #46f5ff; border-radius: 18px; overflow: hidden; background: #05061d; box-shadow: 0 0 10px #46f5ff, 0 0 40px #853cff88, inset 0 0 45px #08133d; }
+#game { width: 100%; height: 100%; }
+#game canvas { display: block; width: 100% !important; height: 100% !important; }
+.crt { position: absolute; inset: 0; pointer-events: none; z-index: 10; background: repeating-linear-gradient(0deg, rgba(0,0,0,.12) 0, rgba(0,0,0,.12) 1px, transparent 1px, transparent 4px); mix-blend-mode: overlay; }
+.crt::after { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse, transparent 50%, #0008 120%); }
+.brand { position: absolute; top: 14px; left: 50%; translate: -50% 0; z-index: 4; color: #ffde69; font-size: clamp(13px, 2vw, 23px); letter-spacing: .22em; text-shadow: 2px 0 #ff2d9b, -2px 0 #42efff, 0 0 14px #ffb300; white-space: nowrap; pointer-events: none; }
+.badge { position: absolute; right: 16px; bottom: 12px; z-index: 4; padding: 4px 8px; border: 1px solid #b778ff88; color: #bcb8d6; font-size: clamp(8px, 1vw, 12px); background: #05061dbb; pointer-events: none; }
+@media (max-width: 650px) { #app { padding: 0; } .game-shell { width: 100vw; border-radius: 0; border-left: 0; border-right: 0; } }
