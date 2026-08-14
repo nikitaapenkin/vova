@@ -21,3 +21,19 @@ export const launchPower = (heldMs: number): number => {
   if (ratio === 1) return PHYSICS.launchMax;
   return PHYSICS.launchMin + (PHYSICS.launchMax - PHYSICS.launchMin) * ratio;
 };
+
+export type MeteorRecovery = { x: number; y: number; velocityX: number; velocityY: number };
+
+export const escapedMeteorRecovery = (x: number, y: number, velocityX: number, velocityY: number): MeteorRecovery | undefined => {
+  const margin = PHYSICS.meteorRadius * 2;
+  if (y < -margin) {
+    return { x: 790, y: 125, velocityX: -Math.max(6, Math.min(10, Math.abs(velocityY) * 0.7)), velocityY: 4 };
+  }
+  if (x < -margin) {
+    return { x: 95, y: clamp(y, 100, 620), velocityX: Math.max(5, Math.abs(velocityX)), velocityY };
+  }
+  if (x > GAME_WIDTH + margin) {
+    return { x: 865, y: clamp(y, 100, 620), velocityX: -Math.max(5, Math.abs(velocityX)), velocityY };
+  }
+  return undefined;
+};

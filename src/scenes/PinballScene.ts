@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { GAME_HEIGHT, GAME_WIDTH, PHYSICS, clamp, launchPower } from '../config/gameplay';
+import { GAME_HEIGHT, GAME_WIDTH, PHYSICS, clamp, escapedMeteorRecovery, launchPower } from '../config/gameplay';
 import { VovaCharacter } from '../entities/VovaCharacter';
 import { messages, type Language, type Messages } from '../i18n';
 import { ArcadeAudio } from '../systems/audio';
@@ -95,6 +95,7 @@ export class PinballScene extends Phaser.Scene {
     this.updateFlippers();
     this.updateCharge(time);
     if (this.state !== 'playing' || !this.ball) return;
+    this.recoverEscapedMeteor();
     this.syncMeteorGraphic();
     this.emitCosmicTrail(time);
     this.capMeteorSpeed();
@@ -131,10 +132,11 @@ export class PinballScene extends Phaser.Scene {
     this.wall(101, 595, 210, 18, -0.72);
     this.wall(859, 595, 210, 18, 0.72);
     this.wall(820, 382, 12, 430, 0);
-    this.wall(850, 160, 12, 180, 0.2);
+    this.wall(850, 110, 80, 18, 0.48);
 
     const lane = this.add.graphics();
     lane.lineStyle(3, COLORS.amber, 0.75).strokeRoundedRect(825, 92, 50, 555, 20);
+    lane.lineStyle(5, COLORS.amber, 0.9).lineBetween(815, 91, 885, 129);
     lane.fillStyle(COLORS.amber, 0.22).fillRect(833, 608, 34, 28);
     lane.lineStyle(2, COLORS.amber, 1).strokeRect(833, 608, 34, 28);
 
@@ -274,7 +276,6 @@ export class PinballScene extends Phaser.Scene {
     keyboard.on('keydown-M', () => this.toggleSound());
     space.on('down', (_key: Phaser.Input.Keyboard.Key, event: KeyboardEvent) => {
       event.preventDefault();
-      if (this.state === 'intro' || this.state === 'gameover') this.beginGame();
       this.startLaunchCharge();
     });
     space.on('up', (_key: Phaser.Input.Keyboard.Key, event: KeyboardEvent) => {
@@ -393,6 +394,16 @@ export class PinballScene extends Phaser.Scene {
     if (!this.ball || !this.ballCore || !this.ballGlow) return;
     this.ballCore.setPosition(this.ball.position.x, this.ball.position.y).setRotation(this.ball.angle);
     this.ballGlow.setPosition(this.ball.position.x, this.ball.position.y);
+  }
+
+  private recoverEscapedMeteor(): void {
+    if (!this.ball || this.isLoaded) return;
+    const recovery = escapedMeteorRecovery(this.ball.position.x, this.ball.position.y, this.ball.velocity.x, this.ball.velocity.y);
+    if (!recovery) return;
+    this.matter.body.setPosition(this.ball, { x: recovery.x, y: recovery.y });
+    this.matter.body.setVelocity(this.ball, { x: recovery.velocityX, y: recovery.velocityY });
+    this.lastMovingAt = this.time.now;
+    this.statusText.setText(this.t.gravityPulse);
   }
 
   private capMeteorSpeed(): void {
