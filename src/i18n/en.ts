@@ -13,7 +13,7 @@ export const en: Messages = {
   right: 'RIGHT  D / →',
   controls: 'A / ←  LEFT FLIPPERS\nD / →  RIGHT FLIPPERS\nSPACE  CHARGE AND LAUNCH\nP / ESC  PAUSE  ·  M  SOUND',
   firstHint: 'Arrows — flippers. Space — launch.\nDon’t let the meteor fall into the black hole!',
-  start: 'ENTER — START',
+  start: 'ENTER / SPACE — START',
   language: 'LANGUAGE  RU / EN  [L]',
   paused: 'PAUSED',
   resume: 'P / ESC — CONTINUE',

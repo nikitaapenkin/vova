@@ -265,26 +265,40 @@ export class PinballScene extends Phaser.Scene {
     const keyboard = this.input.keyboard;
     if (!keyboard) return;
     keyboard.addCapture(['SPACE', 'LEFT', 'RIGHT', 'A', 'D', 'ENTER', 'R', 'P', 'ESC', 'L', 'M']);
+    const space = keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     keyboard.on('keydown-ENTER', () => this.beginGame());
     keyboard.on('keydown-R', () => { if (this.state === 'gameover') this.beginGame(); });
     keyboard.on('keydown-P', () => this.togglePause());
     keyboard.on('keydown-ESC', () => this.togglePause());
     keyboard.on('keydown-L', () => this.toggleLanguage());
     keyboard.on('keydown-M', () => this.toggleSound());
-    keyboard.on('keydown-SPACE', () => {
-      if (this.state === 'playing' && this.isLoaded && !this.charging) { this.charging = true; this.chargeStarted = this.time.now; }
+    space.on('down', (_key: Phaser.Input.Keyboard.Key, event: KeyboardEvent) => {
+      event.preventDefault();
+      if (this.state === 'intro' || this.state === 'gameover') this.beginGame();
+      this.startLaunchCharge();
     });
-    keyboard.on('keyup-SPACE', () => {
-      if (!this.charging || !this.ball || !this.isLoaded) return;
-      const power = launchPower(this.time.now - this.chargeStarted);
-      this.matter.body.setStatic(this.ball, false);
-      this.matter.body.setVelocity(this.ball, { x: -1.6, y: -power * 270 });
-      this.arcadeAudio.play('launch');
-      this.isLoaded = false;
-      this.charging = false;
-      this.chargeBar.height = 0;
-      this.statusText.setText(this.t.inPlay);
+    space.on('up', (_key: Phaser.Input.Keyboard.Key, event: KeyboardEvent) => {
+      event.preventDefault();
+      this.releaseLaunch();
     });
+  }
+
+  private startLaunchCharge(): void {
+    if (this.state !== 'playing' || !this.isLoaded || this.charging) return;
+    this.charging = true;
+    this.chargeStarted = this.time.now;
+  }
+
+  private releaseLaunch(): void {
+    if (!this.charging || !this.ball || !this.isLoaded) return;
+    const power = launchPower(this.time.now - this.chargeStarted);
+    this.matter.body.setStatic(this.ball, false);
+    this.matter.body.setVelocity(this.ball, { x: -1.6, y: -power * 270 });
+    this.arcadeAudio.play('launch');
+    this.isLoaded = false;
+    this.charging = false;
+    this.chargeBar.height = 0;
+    this.statusText.setText(this.t.inPlay);
   }
 
   private beginGame(): void {

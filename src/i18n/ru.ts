@@ -13,7 +13,7 @@ export const ru: Messages = {
   right: 'ПРАВЫЕ  D / →',
   controls: 'A / ←  ЛЕВЫЕ ФЛИППЕРЫ\nD / →  ПРАВЫЕ ФЛИППЕРЫ\nSPACE  ЗАРЯДИТЬ И ЗАПУСТИТЬ\nP / ESC  ПАУЗА  ·  M  ЗВУК',
   firstHint: 'Стрелки — флипперы. Пробел — запуск.\nНе дай метеориту улететь в чёрную дыру!',
-  start: 'ENTER — НАЧАТЬ',
+  start: 'ENTER / SPACE — НАЧАТЬ',
   language: 'ЯЗЫК  RU / EN  [L]',
   paused: 'ПАУЗА',
   resume: 'P / ESC — ПРОДОЛЖИТЬ',
